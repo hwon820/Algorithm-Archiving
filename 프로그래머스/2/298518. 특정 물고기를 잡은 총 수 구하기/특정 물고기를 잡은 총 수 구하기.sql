@@ -1,0 +1,8 @@
+SELECT 
+    COUNT(*) AS FISH_COUNT
+FROM 
+    FISH_INFO info
+JOIN 
+    FISH_NAME_INFO name ON info.FISH_TYPE = name.FISH_TYPE
+WHERE 
+    name.FISH_NAME IN ('BASS', 'SNAPPER');
