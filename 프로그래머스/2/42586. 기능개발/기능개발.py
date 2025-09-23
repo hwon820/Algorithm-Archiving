@@ -1,25 +1,15 @@
-# 기능개발
+from collections import deque
+
 def solution(progresses, speeds):
-
-    progresses.reverse()
-    speeds.reverse()
     answer = []
-    
-    while len(progresses) != 0:
-
-        cnt = 0
-        
-        progresses = [p + s for p, s in zip(progresses, speeds)]
-
-        while progresses[-1] >= 100:
-            progresses.pop()
-            speeds.pop()
+    while progresses:
+        cnt = 0; speeds = deque(speeds)
+        while progresses[0] < 100:
+            progresses = deque([progresses[i]+speeds[i] for i in range(len(progresses))])
+        while len(progresses) != 0 and progresses[0] >= 100:
+            progresses.popleft()
+            speeds.popleft()
             cnt += 1
+        answer.append(cnt)
 
-            if len(progresses) == 0:
-                break
-
-        if cnt > 0:
-              answer.append(cnt)
-            
     return answer
