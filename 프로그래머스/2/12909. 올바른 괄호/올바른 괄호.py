@@ -1,16 +1,14 @@
 def solution(s):
-    answer = True
-    stay = []
-    for i in s:
-      # 열린 괄호는 무조건 append
-        if i == '(':
-            stay.append(i)
+    s = list(s); cand = []
+    while s:
+        temp = s.pop()
+        if temp == ")":
+            cand.append("(")
         else:
-        # stay가 비었거나 최근에 추가된 열린 괄호가 없다면
-            if len(stay) == 0 or stay.pop() != '(':
+            if not cand:
                 return False
-    # 여기가 문젠가
-    if len(stay) > 0:
+            cand.pop()
+    if cand:
         return False
-
+    
     return True
