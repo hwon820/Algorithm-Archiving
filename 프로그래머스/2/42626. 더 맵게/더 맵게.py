@@ -1,19 +1,20 @@
 import heapq
 
 def solution(scoville, K):
-    answer = 0
-
+    
     heapq.heapify(scoville)
-
+    answer = 0
     while True:
-        min_ = heapq.heappop(scoville)
-        if min_ < K:
-            if len(scoville) == 0:
-                return -1
-            else:
-                heapq.heappush(scoville, min_ + heapq.heappop(scoville) * 2)
-                answer += 1
-        else:
+        temp = heapq.heappop(scoville)
+        if temp >= K:
+            heapq.heappush(scoville, temp)
             break
-
+        else:
+            if len(scoville) != 0:
+                num = heapq.heappop(scoville)
+                heapq.heappush(scoville, temp + (num*2))
+                answer += 1
+            else:
+                answer = -1
+                break
     return answer
