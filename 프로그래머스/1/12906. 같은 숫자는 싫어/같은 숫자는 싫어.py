@@ -1,15 +1,15 @@
-# 같은 숫자는 싫어
-def solution(arr):
+from collections import deque
 
-    arr.reverse()
-    answer = []
+def solution(arr):
+    arr = deque(arr)
     
-    while len(arr) != 0:
-        num = arr.pop()
-    
-        if  len(answer) == 0 or num != answer[-1]:
-            answer.append(num)
-        else:
-            continue
-    
+    fst = arr.popleft()
+    answer = [fst]
+
+    while arr:
+        temp = arr.popleft()
+        if temp != fst:
+            answer.append(temp)
+            fst = temp
+
     return answer
