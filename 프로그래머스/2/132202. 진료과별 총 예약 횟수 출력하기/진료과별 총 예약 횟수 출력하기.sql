@@ -1,0 +1,11 @@
+-- 5월 예약 자 중 취소 여부가 N : 서브쿼리
+-- Group By MCDP_CD
+-- ORDER BY COUNT, MCDP_CD
+SELECT MCDP_CD as "진료과코드", COUNT(MCDP_CD) as "5월예약건수"
+FROM (
+    SELECT *
+    FROM APPOINTMENT
+    WHERE YEAR(APNT_YMD) = '2022' AND MONTH(APNT_YMD) = '05'
+) as may
+GROUP BY MCDP_CD
+ORDER BY COUNT(MCDP_CD), MCDP_CD
