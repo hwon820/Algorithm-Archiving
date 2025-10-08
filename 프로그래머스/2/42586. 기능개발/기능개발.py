@@ -1,15 +1,23 @@
 from collections import deque
-
+from math import ceil
 def solution(progresses, speeds):
-    answer = []
-    while progresses:
-        cnt = 0; speeds = deque(speeds)
-        while progresses[0] < 100:
-            progresses = deque([progresses[i]+speeds[i] for i in range(len(progresses))])
-        while len(progresses) != 0 and progresses[0] >= 100:
-            progresses.popleft()
-            speeds.popleft()
-            cnt += 1
-        answer.append(cnt)
 
-    return answer
+    progresses = deque(progresses); speeds = deque(speeds)
+    ans = []
+    
+    while progresses:
+        prog = progresses.popleft(); sp = speeds.popleft()
+        cnt = 1
+        
+        rounds = ceil((100 - prog) / sp) # 현재 prog가 완료되기 위해 필요한 days
+        
+        while progresses:
+            n_prog = progresses.popleft(); n_sp = speeds.popleft()
+            if n_prog + rounds * n_sp >= 100:
+                cnt += 1
+            else:
+                progresses.appendleft(n_prog); speeds.appendleft(n_sp)
+                break
+        ans.append(cnt)
+    
+    return ans
