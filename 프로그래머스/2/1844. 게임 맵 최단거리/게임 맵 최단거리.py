@@ -1,29 +1,32 @@
+# bfs
 
-import heapq
+from collections import deque
 
 def solution(maps):
-
-    R, C = len(maps), len(maps[0])  # 인덱스 최대값
-
-    # 미방문 길을 전부 무한으로로 변환
-    maps = [[float("inf") if maps[r][c] else 0 for c in range(C)] for r in range(R)]
+    route = deque([(0, 0)])
+    n = len(maps); m = len(maps[0])
     
-    # 초기화
-    maps[0][0] = 1
-    queue = []
-    heapq.heappush(queue, (1, 0, 0))  # (몇칸이동, r, c)
-
-    while queue:
-        cv, cr, cc = heapq.heappop(queue)
+    dx = [-1, 1, 0, 0]
+    dy = [0, 0, -1, 1]
+    
+    while route:
+        nx, ny = route.popleft()
         
-        # 동서남북 탐색
-        for rd, cd, in ((-1, 0),(0, 1),(1, 0),(0,-1)):
-            nr, nc = cr + rd, cc + cd
-
-            # 탐색하려는 인덱스가 존재하고 길이 있을 때
-            if nr in range(R) and nc in range(C) and maps[nr][nc]:  
-                if cv + 1 < maps[nr][nc]:  # 탐색한 블럭의 값보다 현재 칸에서 1보 전진한 게 작으면(최단거리면)
-                    maps[nr][nc] = cv + 1
-                    heapq.heappush(queue, (maps[nr][nc], nr, nc))  # heapq 업데이트
+        for i in range(4):
+            nxt_x, nxt_y = nx+dx[i], ny+dy[i]
+            
+            if -1 < nxt_x < n and -1 < nxt_y < m:
+                if maps[nxt_x][nxt_y] == 1:
+                    maps[nxt_x][nxt_y] = maps[nx][ny] + 1
+                    route.append((nxt_x, nxt_y))
+                elif maps[nxt_x][nxt_y] > 1:
+                    if maps[nxt_x][nxt_y] > maps[nx][ny] + 1:
+                        maps[nxt_x][nxt_y] = maps[nx][ny] + 1
+                        route.append((nxt_x, nxt_y))
     
-    return -1 if maps[R-1][C-1] == float("inf") else maps[R-1][C-1]
+    if maps[n-1][m-1] == 1:
+        return -1
+    else:
+        return maps[n-1][m-1]
+                    
+                
