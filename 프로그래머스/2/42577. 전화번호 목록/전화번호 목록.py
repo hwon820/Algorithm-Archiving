@@ -1,12 +1,10 @@
-# 문자열 기준 정렬 -> 짧고 앞순위로 오름차순
-#               -> temp가 temp 다음의 머릿말이 아니면 더 볼 필요 X
+
 def solution(phone_book):
-    phone_book.sort()
-        
-    for i in range(len(phone_book)-1):
-        if phone_book[i] == phone_book[i+1][:len(phone_book[i])]:
+    # 문자열 기준 정렬 -> 직후 번호의 접두어랑 다르면 그 후도 다르다
+    phone_book = sorted(phone_book)
+    for idx in range(len(phone_book) - 1):
+        if phone_book[idx] == phone_book[idx+1][:len(phone_book[idx])]:
             return False
-    
     return True
-
-
+        
+    
