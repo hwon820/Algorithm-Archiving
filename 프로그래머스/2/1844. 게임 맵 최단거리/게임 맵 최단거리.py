@@ -1,32 +1,27 @@
-# bfs
-
 from collections import deque
 
 def solution(maps):
-    route = deque([(0, 0)])
+    
     n = len(maps); m = len(maps[0])
+    que = deque([(0, 0)])
+    visited = [[0] * m for _ in range(n)]; visited[0][0] = 1
     
-    dx = [-1, 1, 0, 0]
-    dy = [0, 0, -1, 1]
-    
-    while route:
-        nx, ny = route.popleft()
+    while que:
+        temp = que.popleft()
+        dr = [(-1, 0), (1, 0), (0, -1), (0, 1)]
         
-        for i in range(4):
-            nxt_x, nxt_y = nx+dx[i], ny+dy[i]
+        for dx, dy in dr:
+            nx = temp[0] + dx; ny = temp[1] + dy
             
-            if -1 < nxt_x < n and -1 < nxt_y < m:
-                if maps[nxt_x][nxt_y] == 1:
-                    maps[nxt_x][nxt_y] = maps[nx][ny] + 1
-                    route.append((nxt_x, nxt_y))
-                elif maps[nxt_x][nxt_y] > 1:
-                    if maps[nxt_x][nxt_y] > maps[nx][ny] + 1:
-                        maps[nxt_x][nxt_y] = maps[nx][ny] + 1
-                        route.append((nxt_x, nxt_y))
-    
+            if -1 < nx < n and -1 < ny < m and maps[nx][ny] > 0 and visited[nx][ny] == 0:
+                if maps[nx][ny] == 1:
+                    maps[nx][ny] = maps[temp[0]][temp[1]] + 1
+                else:
+                    maps[nx][ny] = min(maps[nx][ny], maps[temp[0]][temp[1]] + 1)
+                visited[nx][ny] = 1
+                que.append((nx, ny))
+                
     if maps[n-1][m-1] == 1:
         return -1
     else:
         return maps[n-1][m-1]
-                    
-                
